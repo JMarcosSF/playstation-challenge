@@ -1,114 +1,68 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect} from 'react-redux';
-import { Tree, Icon } from "antd";
+import { Tree, Icon, Spin } from "antd";
 import { fetchTrees } from "../actions";
 
-const { TreeNode } = Tree;
-
-const treeData = [
-  {
-    title: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      },
-      {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      },
-      {
-        title: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: '0-1',
-    key: '0-1',
-    children: [
-      { title: '0-1-0-0', key: '0-1-0-0' },
-      { title: '0-1-0-1', key: '0-1-0-1' },
-      { title: '0-1-0-2', key: '0-1-0-2' },
-    ],
-  },
-  {
-    title: '0-2',
-    key: '0-2',
-  },
-];
+const { TreeNode, DirectoryTree } = Tree;
 
 class SideTree extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      expandedKeys: ['0-0-0', '0-0-1'],
-      autoExpandParent: true,
-      checkedKeys: ['0-0-0'],
-      selectedKeys: [],
-    };
   }
 
   componentDidMount() {
     this.props.fetchTrees();
   }
 
-  onExpand = expandedKeys => {
-    console.log('onExpand', expandedKeys);
-    // if not set autoExpandParent to false, if children expanded, parent can not collapse.
-    // or, you can remove all expanded children keys.
-    this.setState({
-      expandedKeys,
-      autoExpandParent: false,
-    });
+  onSelect = (keys, event) => {
+    // console.log('Trigger Select', keys, event);
+    console.log(event.node.props.dataRef)
   };
 
-  onCheck = checkedKeys => {
-    console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
+  onExpand = () => {
+    console.log('Trigger Expand');
   };
 
-  onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
-    this.setState({ selectedKeys });
-  };
+  hasChildren(node) {
+    if(node) {
+      return node.children && node.children.length;
+    }
+  }
 
   renderTreeNodes = data =>
     data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.title} key={item.key} dataRef={item}>
+          <TreeNode title={item.nameEn} key={item.id} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode icon={<Icon type="link" />} {...item} />;
+      return <TreeNode {...item} isLeaf />;
     });
 
+  renderDirectoryTree = (rootNodes) => {
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+    if(this.props.loading) {
+      return (
+        <Spin indicator={antIcon} />
+      );
+    } else {
+      return (
+        <DirectoryTree onSelect={this.onSelect} onExpand={this.onExpand}>
+          { this.renderTreeNodes(rootNodes) }
+        </DirectoryTree>
+      );
+    }
+  }
+
   render() {
+    let rootNodes = [];
+    if(this.hasChildren(this.props.trees[0]))
+      rootNodes = this.props.trees[0].children;
+      console.log(this.props.loading);
     return (
-      <Tree
-        showIcon
-        onExpand={this.onExpand}
-        expandedKeys={this.state.expandedKeys}
-        autoExpandParent={this.state.autoExpandParent}
-        onSelect={this.onSelect}
-        selectedKeys={this.state.selectedKeys}
-      >
-        {this.renderTreeNodes(treeData)}
-      </Tree>
+      this.renderDirectoryTree(rootNodes)
     );
   }
 
@@ -120,4 +74,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 };
 
-export default connect(null, { fetchTrees })(SideTree)
+export default connect(mapStateToProps, { fetchTrees })(SideTree)

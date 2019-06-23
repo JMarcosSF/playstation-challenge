@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 // import { reducer as formReducer } from 'redux-form';
 // import authReducer from './AuthReducer';
-import treeReducer from './TreeReducer';
+import trees from './TreeReducer';
+import ajaxCallsInProgress from './ajaxStatusReducer'
 
 export default combineReducers({
-  trees: treeReducer,
+  trees,
+  ajaxCallsInProgress,
 })
