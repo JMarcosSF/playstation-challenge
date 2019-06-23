@@ -1,7 +1,3 @@
-/** AJAX Actions */
-export const BEGIN_AJAX_CALL = 'BEGIN_AJAX_CALL';
-export const AJAX_CALL_ERROR = 'AJAX_CALL_ERROR';
-
 /** Tree Data API */
 export const FETCH_TREE = 'FETCH_TREE';
 export const FETCH_TREES = 'FETCH_TREES';

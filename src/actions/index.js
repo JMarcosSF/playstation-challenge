@@ -1,6 +1,5 @@
 import trees from '../apis/trees';
 // import history from '../history';
-import {beginAjaxCall, ajaxCallError} from './ajaxStatusActions';
 import {
   FETCH_TREES,
   FETCH_TREE,
@@ -12,14 +11,12 @@ import {
 /** Directory Action Creators */
 export const fetchTrees = () => async dispatch => {
   dispatch({ type: FETCH_TREES});
-  dispatch(beginAjaxCall());
   try {
     const response = await trees.get('/tree-data');
     // SIMULATING REAL WORLD API CALL
     setTimeout(() => dispatch({ type: FETCH_TREES_SUCCESS, payload: response.data }), 1000);
   }catch (e) {
     dispatch({ type: FETCH_TREES_ERROR })
-    dispatch({ type: AJAX_CALL_ERROR })
   }
 };
 

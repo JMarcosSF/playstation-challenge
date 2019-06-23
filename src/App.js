@@ -3,15 +3,31 @@ import { connect} from 'react-redux';
 import { Layout, Menu, Breadcrumb, Modal } from 'antd';
 import SideTree from './components/SideTree';
 import './App.css';
+import {fetchTrees} from "./actions";
 
 const { Header, Content, Sider } = Layout;
 
 class App extends Component {
 
+  state = {
+    selectedTreeNode: {},
+  }
+
+  componentDidMount() {
+    this.props.fetchTrees();
+  }
+
   error() {
     Modal.error({
       title: 'This is an error message',
-      content: 'some messages...some messages...',
+      content: this.props.error,
+    });
+  }
+
+  handleTreeNodeClick = (item) => {
+    console.log(item)
+    this.setState({
+      selectedTreeNode: item,
     });
   }
 
@@ -35,7 +51,11 @@ class App extends Component {
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
-              <SideTree loading={this.props.loading}/>
+              <SideTree
+                treeData={this.props.treeData}
+                loading={this.props.loading}
+                handleTreeNodeClick={this.handleTreeNodeClick}
+              />
             </Sider>
             <Layout style={{ padding: '0 24px 24px' }}>
               <Breadcrumb style={{ margin: '16px 0' }}>
@@ -51,7 +71,7 @@ class App extends Component {
                   minHeight: 280,
                 }}
               >
-                Content
+                {this.state.selectedTreeNode.id}
               </Content>
             </Layout>
           </Layout>
@@ -62,11 +82,11 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state.treeData)
   return {
+    treeData: Object.values(state.treeData.nodes),
     loading: state.treeData.isFetching,
     error: state.treeData.errorMessage,
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, { fetchTrees })(App);
