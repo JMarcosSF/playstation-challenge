@@ -7,12 +7,14 @@ import {
   FETCH_TREES_ERROR,
 } from "../actions/actionTypes";
 
-export default (state = initialState.trees, action) => {
+export default (state = {nodes: [], isFetching: false, errorMessage: ''}, action) => {
   switch (action.type) {
+    case FETCH_TREES:
+      return { ...state, isFetching: true}
     case FETCH_TREES_SUCCESS:
-      return { ...state, ..._.mapKeys(action.payload, 'id') };
-    // case FETCH_TREES_ERROR:
-    //   return { ...state, action.payload}
+      return { ...state, nodes: action.payload, isFetching: false };
+    case FETCH_TREES_ERROR:
+      return { ...state, errorMessage: 'Failed To Load Tree Data From API', isFetching: false }
     default:
       return state;
   }

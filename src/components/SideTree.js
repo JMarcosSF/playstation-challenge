@@ -60,7 +60,6 @@ class SideTree extends Component {
     let rootNodes = [];
     if(this.hasChildren(this.props.trees[0]))
       rootNodes = this.props.trees[0].children;
-      console.log(this.props.loading);
     return (
       this.renderDirectoryTree(rootNodes)
     );
@@ -70,7 +69,7 @@ class SideTree extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    trees: Object.values(state.trees),
+    trees: Object.values(state.treeData.nodes),
   }
 };
 

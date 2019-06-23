@@ -6,7 +6,7 @@ import {
   FETCH_TREE,
   FETCH_TREE_SUCCESS,
   FETCH_TREES_SUCCESS,
-  FETCH_TREES_ERROR,
+  FETCH_TREES_ERROR, AJAX_CALL_ERROR,
 } from './actionTypes';
 
 /** Directory Action Creators */
@@ -18,9 +18,8 @@ export const fetchTrees = () => async dispatch => {
     // SIMULATING REAL WORLD API CALL
     setTimeout(() => dispatch({ type: FETCH_TREES_SUCCESS, payload: response.data }), 1000);
   }catch (e) {
-    console.log('Handle errors here')
-    dispatch({ type: FETCH_TREES_ERROR, error: e })
-    throw new Error('I crashed!');
+    dispatch({ type: FETCH_TREES_ERROR })
+    dispatch({ type: AJAX_CALL_ERROR })
   }
 };
 

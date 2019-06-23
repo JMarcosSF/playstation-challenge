@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect} from 'react-redux';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Modal } from 'antd';
 import SideTree from './components/SideTree';
 import './App.css';
 
@@ -8,7 +8,15 @@ const { Header, Content, Sider } = Layout;
 
 class App extends Component {
 
+  error() {
+    Modal.error({
+      title: 'This is an error message',
+      content: 'some messages...some messages...',
+    });
+  }
+
   render() {
+    {this.props.error && this.error()}
     return (
       <div className="App">
         <Layout>
@@ -54,8 +62,10 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  console.log(state.treeData)
   return {
-    loading: state.ajaxCallsInProgress > 0
+    loading: state.treeData.isFetching,
+    error: state.treeData.errorMessage,
   };
 }
 
