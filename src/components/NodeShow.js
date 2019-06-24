@@ -99,6 +99,7 @@ const NodeShow = ({selectedNode}) => {
     ]
   }
 
+  // TODO Add breadcrumb
   const tableData = data.children;
   const columns = [
     {
@@ -118,6 +119,7 @@ const NodeShow = ({selectedNode}) => {
         <Button style={ buttonStyle } icon="folder-add">New Folder</Button>
         <Button style={ buttonStyle } icon="link">Add Link</Button>
       </div>
+      // TODO Replace with menu
       <Table columns={columns} rowKey={'id'} dataSource={tableData} />
     </div>
   );
