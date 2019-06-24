@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Table, Icon } from 'antd';
+import { Button, Menu, Icon } from 'antd';
+const { SubMenu } = Menu;
 
 const NodeShow = ({selectedNode}) => {
   console.log('In NodeShow:')
@@ -99,16 +100,59 @@ const NodeShow = ({selectedNode}) => {
     ]
   }
 
+  const getIconType = (type) => {
+    let iconType = ''
+    switch(type) {
+      case 'folder':
+        iconType = 'folder';
+        break;
+      case 'document':
+        iconType = 'file';
+        break;
+      case 'link':
+        iconType = 'link';
+        break;
+      default:
+        iconType = 'file-unknown';
+    }
+    return iconType;
+  }
+
   // TODO Add breadcrumb
   const tableData = data.children;
-  const columns = [
-    {
-      title: '',
-      dataIndex: 'nameEn',
-      key: 'nameEn',
-    }, {
-      title: ''
-    }];
+
+  const renderTreeNodes = data =>
+      data.map(item => {
+        if (item.children) {
+          return(
+            <SubMenu
+              key={ item.id }
+              title={
+                <span>
+                  <Icon type={ getIconType(item.type) } />
+                  <span>{ item.nameEn }</span>
+                </span>
+                }
+            >
+              {renderTreeNodes(item.children)}
+            </SubMenu>
+          )
+        }
+        return <Menu.Item key={ item.id }>{ item.nameEn}</Menu.Item>;
+      });
+
+  const renderMenu = () => {
+    return (
+        <div>
+          <br />
+          <Menu
+              mode={'inline'}
+          >
+            { renderTreeNodes(tableData) }
+          </Menu>
+        </div>
+    );
+  }
 
   const buttonStyle = {
     marginRight: '5px'
@@ -119,8 +163,7 @@ const NodeShow = ({selectedNode}) => {
         <Button style={ buttonStyle } icon="folder-add">New Folder</Button>
         <Button style={ buttonStyle } icon="link">Add Link</Button>
       </div>
-      // TODO Replace with menu
-      <Table columns={columns} rowKey={'id'} dataSource={tableData} />
+      { renderMenu() }
     </div>
   );
 };
