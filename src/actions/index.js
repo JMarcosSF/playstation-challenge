@@ -2,10 +2,9 @@ import trees from '../apis/trees';
 // import history from '../history';
 import {
   FETCH_TREES,
-  FETCH_TREE,
   FETCH_TREE_SUCCESS,
   FETCH_TREES_SUCCESS,
-  FETCH_TREES_ERROR, AJAX_CALL_ERROR,
+  FETCH_TREES_ERROR,
 } from './actionTypes';
 
 /** Directory Action Creators */

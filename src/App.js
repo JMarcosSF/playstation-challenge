@@ -35,11 +35,21 @@ class App extends Component {
   }
 
   render() {
+    const centerStyle = {
+      margin: '0',
+      position: 'relative',
+      top: '50%',
+      left: '80%',
+      transform: 'translate(-50%, -50%)',
+    };
     {this.props.error && this.error()}
     return (
       <div className="App">
-        <div style={{height: '66px'}}>
-          <Avatar style={{float: 'right'}}size={64} icon="user" />
+        <div>
+          <div >
+            <h2 style={{float:'left'}}>Submit Feedback To abcd@xyz.com</h2>
+            <Avatar size={50} icon="user" />
+          </div>
         </div>
         <Layout>
           <Header className="header">
@@ -47,12 +57,12 @@ class App extends Component {
           </Header>
           <Layout style={{ padding: '0 0px 2px' }}>
             <Sider width={'20%'} style={{ background: '#fff' }}>
-                <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-                  <Menu.Item key="mail">
+                <Menu style={{textAlign:'center'}}onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                  <Menu.Item key="menu-1">
                     <Icon type="unordered-list" />
                     <span></span>
                   </Menu.Item>
-                  <Menu.Item key="mail">
+                  <Menu.Item key="menu-2">
                     <Icon type="menu-unfold" />
                   </Menu.Item>
                 </Menu>

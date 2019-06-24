@@ -1,18 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { Tree, Spin } from "antd";
-import { withRecursedTreeDataHandler } from '../hoc/withRecursedTreeDataHandler';
+import { getTreeNodeElement } from './TreeDataElement';
+import { withTreeDataPropagator } from '../hoc/withTreeDataPropagator';
 
 const { DirectoryTree } = Tree;
 
-export const SideTree = ({ treeData, loading, handleTreeNodeClick, recursiveTreeHandler }) => {
+export const SideTree = ({ treeData, loading, handleTreeNodeClick, withTreeDataPropagator }) => {
 
   const onSelect = (keys, event) => {
     const handleClick = handleTreeNodeClick();
     handleClick(event.selectedNodes[0].props.dataRef);
-  };
-
-  const onExpand = () => {
-    console.log('Trigger Expand');
   };
 
   const hasChildren = (node) => {
@@ -35,20 +32,20 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick, recursiveTree
       );
     } else {
       return (
-        <DirectoryTree showLine={true} onSelect={onSelect} onExpand={onExpand}>
-          { recursiveTreeHandler(rootNodes) }
+        <DirectoryTree showLine={true} onSelect={onSelect}>
+          { withTreeDataPropagator(rootNodes, getTreeNodeElement) }
         </DirectoryTree>
       );
     }
   }
 
-  let rootNodes = [];
+  let topLevelNodes = [];
   if(hasChildren(treeData[0]))
-    rootNodes = treeData[0].children;
+    topLevelNodes = treeData[0].children;
   return (
-    renderDirectoryTree(rootNodes)
+    renderDirectoryTree(topLevelNodes)
   );
 
 };
 
-export default withRecursedTreeDataHandler(SideTree);
+export default withTreeDataPropagator(SideTree);

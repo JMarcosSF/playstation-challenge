@@ -1,18 +1,19 @@
 import React from 'react';
 import {isEmpty} from 'lodash';
-import { withRecursedTreeDataHandler } from '../hoc/withRecursedTreeDataHandler';
+import { getSubMenuElement } from './TreeDataElement';
+import { withTreeDataPropagator } from '../hoc/withTreeDataPropagator';
 import { Button, Menu } from 'antd';
 
-const NodeShow = ({selectedNode, recursiveTreeHandler}) => {
+const NodeShow = ({selectedNode, withTreeDataPropagator}) => {
 
   // TODO Add breadcrumb
 
   const renderMenu = () => {
     if(isEmpty(selectedNode)) {
-      return <div>Please select a node.</div>
+      return <div style={{textAlign: 'center'}}>Please select a node.</div>
     }
     if(!selectedNode.children || selectedNode.children.length < 1) {
-      return <div>No data to display</div>
+      return <div style={{textAlign: 'center'}}>No data to display</div>
     } else {
       return (
         <div>
@@ -20,7 +21,7 @@ const NodeShow = ({selectedNode, recursiveTreeHandler}) => {
           <Menu
             mode={'inline'}
           >
-            { recursiveTreeHandler(selectedNode.children) }
+            { withTreeDataPropagator(selectedNode.children, getSubMenuElement) }
           </Menu>
         </div>
       );
@@ -41,4 +42,4 @@ const NodeShow = ({selectedNode, recursiveTreeHandler}) => {
   );
 };
 
-export default withRecursedTreeDataHandler(NodeShow);
+export default withTreeDataPropagator(NodeShow);
