@@ -9,7 +9,8 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
 
   const onSelect = (keys, event) => {
     // console.log(event.selectedNodes[0].props.dataRef);
-    handleTreeNodeClick(event.selectedNodes[0].props.dataRef);
+    const handleClick = handleTreeNodeClick();
+    handleClick(event.selectedNodes[0].props.dataRef);
   };
 
   const onExpand = () => {
@@ -22,16 +23,34 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
     }
   }
 
+  const getIconType = (type) => {
+    let iconType = ''
+    switch(type) {
+      case 'folder':
+        iconType = 'folder';
+        break;
+      case 'document':
+        iconType = 'file';
+        break;
+      case 'link':
+        iconType = 'link';
+        break;
+      default:
+        iconType = 'file-unknown';
+    }
+    return iconType;
+  }
+
   const renderTreeNodes = data =>
     data.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={item.nameEn} key={item.id} dataRef={item}>
+          <TreeNode icon={<Icon type={ getIconType(item.type) } />} title={item.nameEn} key={item.id} dataRef={item}>
             {renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode {...item} isLeaf />;
+      return <TreeNode icon={<Icon type={ getIconType(item.type) } />} {...item} isLeaf />;
     });
 
   const renderDirectoryTree = (rootNodes) => {
@@ -42,7 +61,7 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
       );
     } else {
       return (
-        <DirectoryTree onSelect={onSelect} onExpand={onExpand}>
+        <DirectoryTree showLine={true} onSelect={onSelect} onExpand={onExpand}>
           { renderTreeNodes(rootNodes) }
         </DirectoryTree>
       );
