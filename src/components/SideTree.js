@@ -51,11 +51,17 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
       return <TreeNode icon={<Icon type={ getIconType(item.type) } />} {...item} isLeaf />;
     });
 
+  const style = {
+    position: 'absolute',
+    margin: '0',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  }
   const renderDirectoryTree = (rootNodes) => {
-    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
     if(loading) {
       return (
-        <Spin indicator={antIcon} />
+        <Spin size="large" style={style}/>
       );
     } else {
       return (

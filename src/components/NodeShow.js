@@ -49,7 +49,10 @@ const NodeShow = ({selectedNode}) => {
 
   const renderMenu = () => {
     if(isEmpty(selectedNode)) {
-        return <div></div>
+      return <div>Please select a node.</div>
+    }
+    if(!selectedNode.children || selectedNode.children.length < 1) {
+        return <div>No data to display</div>
     } else {
         return (
             <div>
