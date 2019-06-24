@@ -1,69 +1,29 @@
 import React from 'react';
 import {isEmpty} from 'lodash';
-import { Button, Menu, Icon } from 'antd';
-const { SubMenu } = Menu;
+import { withRecursedTreeDataHandler } from '../hoc/withRecursedTreeDataHandler';
+import { Button, Menu } from 'antd';
 
-const NodeShow = ({selectedNode}) => {
-  console.log('In NodeShow:')
-  console.log(selectedNode);
-
-  const getIconType = (type) => {
-    let iconType = ''
-    switch(type) {
-      case 'folder':
-        iconType = 'folder';
-        break;
-      case 'document':
-        iconType = 'file';
-        break;
-      case 'link':
-        iconType = 'link';
-        break;
-      default:
-        iconType = 'file-unknown';
-    }
-    return iconType;
-  }
+const NodeShow = ({selectedNode, recursiveTreeHandler}) => {
 
   // TODO Add breadcrumb
-
-  const renderTreeNodes = data =>
-      data.map(item => {
-        if (item.children) {
-          return(
-            <SubMenu
-              key={ item.id }
-              title={
-                <span>
-                  <Icon type={ getIconType(item.type) } />
-                  <span>{ item.nameEn }</span>
-                </span>
-                }
-            >
-              {renderTreeNodes(item.children)}
-            </SubMenu>
-          )
-        }
-        return <Menu.Item key={ item.id }>{ item.nameEn}</Menu.Item>;
-      });
 
   const renderMenu = () => {
     if(isEmpty(selectedNode)) {
       return <div>Please select a node.</div>
     }
     if(!selectedNode.children || selectedNode.children.length < 1) {
-        return <div>No data to display</div>
+      return <div>No data to display</div>
     } else {
-        return (
-            <div>
-                <br />
-                <Menu
-                  mode={'inline'}
-                >
-                  { renderTreeNodes(selectedNode.children) }
-                </Menu>
-            </div>
-        );
+      return (
+        <div>
+          <br />
+          <Menu
+            mode={'inline'}
+          >
+            { recursiveTreeHandler(selectedNode.children) }
+          </Menu>
+        </div>
+      );
     }
   }
 
@@ -81,4 +41,4 @@ const NodeShow = ({selectedNode}) => {
   );
 };
 
-export default NodeShow;
+export default withRecursedTreeDataHandler(NodeShow);

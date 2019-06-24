@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import { Tree, Icon, Spin } from "antd";
+import { Tree, Spin } from "antd";
+import { withRecursedTreeDataHandler } from '../hoc/withRecursedTreeDataHandler';
 
-const { TreeNode, DirectoryTree } = Tree;
+const { DirectoryTree } = Tree;
 
-export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
+export const SideTree = ({ treeData, loading, handleTreeNodeClick, recursiveTreeHandler }) => {
 
   const onSelect = (keys, event) => {
-    // console.log(event.selectedNodes[0].props.dataRef);
     const handleClick = handleTreeNodeClick();
     handleClick(event.selectedNodes[0].props.dataRef);
   };
@@ -20,36 +20,6 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
       return node.children && node.children.length;
     }
   }
-
-  const getIconType = (type) => {
-    let iconType = ''
-    switch(type) {
-      case 'folder':
-        iconType = 'folder';
-        break;
-      case 'document':
-        iconType = 'file';
-        break;
-      case 'link':
-        iconType = 'link';
-        break;
-      default:
-        iconType = 'file-unknown';
-    }
-    return iconType;
-  }
-
-  const renderTreeNodes = data =>
-    data.map(item => {
-      if (item.children) {
-        return (
-          <TreeNode icon={<Icon type={ getIconType(item.type) } />} title={item.nameEn} key={item.id} dataRef={item}>
-            {renderTreeNodes(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode icon={<Icon type={ getIconType(item.type) } />} {...item} isLeaf />;
-    });
 
   const style = {
     position: 'absolute',
@@ -66,7 +36,7 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
     } else {
       return (
         <DirectoryTree showLine={true} onSelect={onSelect} onExpand={onExpand}>
-          { renderTreeNodes(rootNodes) }
+          { recursiveTreeHandler(rootNodes) }
         </DirectoryTree>
       );
     }
@@ -81,4 +51,4 @@ export const SideTree = ({ treeData, loading, handleTreeNodeClick }) => {
 
 };
 
-export default SideTree;
+export default withRecursedTreeDataHandler(SideTree);

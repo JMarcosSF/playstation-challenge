@@ -28,7 +28,6 @@ class App extends Component {
 
   handleTreeNodeClick = (item) => {
     return debounce((item) => {
-      console.log('setting state')
       this.setState({
         selectedTreeNode: item,
       })
