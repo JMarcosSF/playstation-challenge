@@ -14,15 +14,6 @@ For the main project, please use either yarn or npm install, then run the yarn o
 
 * Functional and integration testing.
 
-An implementation of react router and breadcrumb would make sense for state and navigation (ideally would require a capable backend RESTful API).
-
-Although I used _.memoize, further efficiency of building the breadcrumb path is good for discovery.
-
-Enhanced data display for selected nodes and leafs in the UI (such as modals or another div element).
-
-Store Breadcrumb data in redux store.
-
-Functional and integration testing.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
