@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withBreadCrumbSetter } from './hoc/withBreadCrumbSetter';
 import { debounce } from 'lodash';
-import { Layout, Menu, Icon, Modal, Avatar } from 'antd';
+import { Layout, Menu, Icon, Modal, Avatar, PageHeader } from 'antd';
 import SideTree from './components/SideTree';
 import NodeShow from './components/NodeShow'
 import './App.css';
@@ -38,22 +38,17 @@ class App extends Component {
   }
 
   render() {
-    const centerStyle = {
-      margin: '0',
-      position: 'relative',
-      top: '50%',
-      left: '80%',
-      transform: 'translate(-50%, -50%)',
-    };
     {this.props.error && this.error()}
     return (
       <div className="App">
-        <div>
-          <div >
-            <h2 style={{float:'left'}}>Submit Feedback To abcd@xyz.com</h2>
+        <PageHeader>
+          <div style={{position:'absolute', left: '35%'}}>
+            <h2>Submit Feedback To abcd@xyz.com</h2>
+          </div>
+          <div style={{ marginLeft: '96%'}}>
             <Avatar size={50} icon="user" />
           </div>
-        </div>
+        </PageHeader>
         <Layout>
           <Header className="header">
             <div className="logo" />
