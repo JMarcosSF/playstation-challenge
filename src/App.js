@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { withBreadCrumbSetter } from './hoc/withBreadCrumbSetter';
 import { debounce } from 'lodash';
 import { Layout, Menu, Icon, Modal, Avatar } from 'antd';
 import SideTree from './components/SideTree';
@@ -13,6 +14,7 @@ class App extends Component {
 
   state = {
     selectedTreeNode: {},
+    breadCrumbPath: [],
   }
 
   componentDidMount() {
@@ -30,7 +32,8 @@ class App extends Component {
     return debounce((item) => {
       this.setState({
         selectedTreeNode: item,
-      })
+        breadCrumbPath: this.props.setBreadCrumbPath(this.props.treeData, item),
+      });
     }, delay);
   }
 
@@ -81,7 +84,7 @@ class App extends Component {
                   minHeight: 280,
                 }}
               >
-                <NodeShow selectedNode={this.state.selectedTreeNode} />
+                <NodeShow selectedNode={this.state.selectedTreeNode} breadCrumbPath={this.state.breadCrumbPath} />
               </Content>
             </Layout>
           </Layout>
@@ -100,4 +103,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 }
 
-export default connect(mapStateToProps, { fetchTrees })(App);
+export default withBreadCrumbSetter(connect(mapStateToProps, { fetchTrees })(App));

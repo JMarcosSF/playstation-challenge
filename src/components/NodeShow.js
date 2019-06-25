@@ -4,26 +4,41 @@ import { getSubMenuElement } from './TreeDataElement';
 import { withTreeDataPropagator } from '../hoc/withTreeDataPropagator';
 import { Button, Menu, Breadcrumb, Icon } from 'antd';
 
-const NodeShow = ({selectedNode, withTreeDataPropagator}) => {
+const NodeShow = ({selectedNode, withTreeDataPropagator, breadCrumbPath}) => {
+
+  const renderBreadCrumb = () => {
+    return (breadCrumbPath.map(item => {
+      if(item === 'Root') {
+        return (
+          <Breadcrumb.Item href="" key={ item }>
+            <Icon type="home" />
+          </Breadcrumb.Item>
+        )
+      }
+      return (
+        <Breadcrumb.Item key={ item }>{ item }</Breadcrumb.Item>
+      )
+    })
+    )
+  }
 
   const renderMenu = () => {
     if(isEmpty(selectedNode)) {
       return <div style={{textAlign: 'center'}}>Please select a node.</div>
     }
     if(!selectedNode.children || selectedNode.children.length < 1) {
-      return <div style={{textAlign: 'center'}}>No data to display</div>
+      return (
+        <div>
+          <Breadcrumb>
+            { renderBreadCrumb() }
+          </Breadcrumb>
+        </div>
+       )
     } else {
       return (
         <div>
           <Breadcrumb>
-            <Breadcrumb.Item href="">
-              <Icon type="home" />
-            </Breadcrumb.Item>
-            <Breadcrumb.Item href="">
-              <Icon type="user" />
-              <span>Application List</span>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Application</Breadcrumb.Item>
+            { renderBreadCrumb() }
           </Breadcrumb>
           <br />
           <br />
