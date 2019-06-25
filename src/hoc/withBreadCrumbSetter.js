@@ -14,8 +14,8 @@ const crumbSetter = (WrappedComponent) => {
     else
     {
       for(var prop in treeData) {
-        if(prop == 'id') {
-          if(treeData[prop] == objId) {
+        if(prop === 'id') {
+          if(treeData[prop] === objId) {
             return treeData;
           }
         }

@@ -1,8 +1,5 @@
-import _ from 'lodash';
-import initialState from './initialState';
 import {
   FETCH_TREES,
-  FETCH_TREE_SUCCESS,
   FETCH_TREES_SUCCESS,
   FETCH_TREES_ERROR,
 } from "../actions/actionTypes";

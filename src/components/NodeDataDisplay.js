@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty } from 'lodash';
 import { getSubMenuElement } from './TreeDataElement';
-import { Button, Menu, Breadcrumb, Icon } from 'antd';
+import { Menu, Breadcrumb, Icon } from 'antd';
 import { withTreeDataPropagator } from '../hoc/withTreeDataPropagator';
 import NodeDataDisplayButtons from "./NodeDataDisplayButtons";
 
