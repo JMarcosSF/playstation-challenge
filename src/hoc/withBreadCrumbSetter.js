@@ -1,6 +1,6 @@
 import React from 'react';
-
-export const withBreadCrumbSetter = (WrappedComponent) => {
+import { memoize } from 'lodash';
+const crumbSetter = (WrappedComponent) => {
   const getObject = (treeData, objId) => {
     var result = null;
     if(treeData instanceof Array) {
@@ -48,7 +48,7 @@ export const withBreadCrumbSetter = (WrappedComponent) => {
     curr = [...curr, item.nameEn]
     return curr;
   }
-  
+
   class HOC extends React.Component {
     state = {
       setBreadCrumbPath: setBreadCrumb
@@ -60,3 +60,4 @@ export const withBreadCrumbSetter = (WrappedComponent) => {
 
   return HOC;
 };
+export const withBreadCrumbSetter = memoize(crumbSetter);
